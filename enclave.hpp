@@ -2,17 +2,19 @@
 #define DEF_ENCLAVE
 
 #include <string>
+#include <iostream>
 
 class Enclave
 {
     public:
 
-    Enclave(std::string password);
-    bool checkPassword(std::string password);
+    Enclave(int applicationKey);
+    bool checkPassword(std::string password, int applicationKey);
 
     private:
-
-    std::string m_password;
+    bool verifyKey(int key);
+    std::string password;
+    int applicationKey;
 };
 
 #endif

@@ -10,10 +10,13 @@ class Application
     Application();
     void askPassword();
     std::string getPassword();
+    void setEnclaveKey(int key);
+    int getEnclaveKey();
 
     private:
     
     std::string inputPassword;
+    int enclaveKey;
 };
 
 #endif

@@ -19,3 +19,11 @@ void Application::askPassword() {
 string Application::getPassword() {
     return inputPassword;
 }
+
+void Application::setEnclaveKey(int key) {
+    this->enclaveKey = key;
+}
+
+int Application::getEnclaveKey() {
+    return this->enclaveKey;
+}
