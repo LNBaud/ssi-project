@@ -1,6 +1,8 @@
 #ifndef DEF_PROCESSOR
 #define DEF_PROCESSOR
 
+#define CACHE_SIZE 5
+
 #include <string>
 
 using namespace std;
@@ -10,14 +12,13 @@ class Processor
     public:
 
     Processor();
-    void lockCacheForEnclave(int secret);
-    int getCachedData(int position, int secret);
+    void transcientMove(int position, bool value);
+    void roolBack(bool targetCacheL1[CACHE_SIZE]);
+    void setCacheL1(bool cacheL1[CACHE_SIZE]);
 
     private:
 
-    int secretLocker;
-    int cacheL1[256];
-    bool locked;
+    bool cacheL1[CACHE_SIZE];
 };
 
 #endif

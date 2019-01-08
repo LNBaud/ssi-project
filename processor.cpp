@@ -1,23 +1,24 @@
 
 #include "processor.hpp"
-#define ACCESS_FAILED -1
 
 using namespace std;
 
-Processor::Processor(){
-
+Processor::Processor() {
+    for (int i=0; i< CACHE_SIZE; i++) {
+        this->cacheL1[i] = false;
+    }
 }
 
-int Processor::getCachedData(int position, int secret) {
-    if (position < 256 && position >= 0) {
-        if (!locked) {
-            return cacheL1[position];
-        } else if (secretLocker == secret) {
-            return cacheL1[position];
-        } else {
-            return ACCESS_FAILED;
-        }
-        
+void Processor::transcientMove(int position, bool value) {
+    this->cacheL1[position] = value;
+}
+
+void Processor::setCacheL1(bool cacheL1[CACHE_SIZE]) {
+    for (int i=0; i< CACHE_SIZE; i++) {
+        this->cacheL1[i] = cacheL1[i];
     }
-    return ACCESS_FAILED;
+}
+
+void Processor::roolBack(bool cacheL1[CACHE_SIZE]) {
+    this->setCacheL1(cacheL1);
 }
