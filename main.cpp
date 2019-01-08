@@ -7,6 +7,29 @@
 
 using namespace std;
 
+double timeToRollBackL1(Processor* processor, bool * cachedSecret, int pos, bool boolVal){
+    // Record start time
+    auto start = std::chrono::high_resolution_clock::now();
+
+    processor->transcientMove(pos,boolVal);
+    processor->rollBack(cachedSecret);
+    
+    // Record end time
+    auto finish = std::chrono::high_resolution_clock::now();
+    return (std::chrono::duration<double> (finish - start)).count();
+}
+
+void decodeCacheL1(bool* decoded, Processor *processor, bool * cachedSecret) {
+    for (int i=0; i<CACHE_SIZE; i++) {
+        if (timeToRollBackL1(processor, cachedSecret, i, true) > 
+                timeToRollBackL1(processor, cachedSecret, i, false)) {
+            decoded[i] = false;
+        } else {
+            decoded[i] = true;
+        }
+    } 
+}
+
 int main(int argc, char** argv)
 {
     // cout << "Foreshadow !" << endl;
@@ -30,36 +53,21 @@ int main(int argc, char** argv)
 
     Processor* processor = new Processor();
     bool cachedSecret[CACHE_SIZE];
-    cachedSecret[0] = false;
-    cachedSecret[1] = true;
-    cachedSecret[2] = true;
-    cachedSecret[3] = false;
-    cachedSecret[4] = false;
+         cachedSecret[0] = false;
+         cachedSecret[1] = true;
+         cachedSecret[2] = false;
+         cachedSecret[3] = true;
+         cachedSecret[4] = false;
+         cachedSecret[5] = true;
+         cachedSecret[6] = false;
+         cachedSecret[7] = false;
     processor->setCacheL1(cachedSecret);
 
-    // Record start time
-    auto start = std::chrono::high_resolution_clock::now();
-
-    processor->transcientMove(0,true);
-    processor->roolBack(cachedSecret);
-
-    // Record end time
-    auto finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = finish - start;
-
-    cout << "1 --- time needed: " << elapsed.count() << endl;
-
-    // Record start time
-    start = std::chrono::high_resolution_clock::now();
-
-    processor->transcientMove(0,false);
-    processor->roolBack(cachedSecret);
-
-    // Record end time
-    finish = std::chrono::high_resolution_clock::now();
-    elapsed = finish - start;
-
-    cout << "2 --- time needed: " << elapsed.count() << endl;
+    bool decoded[CACHE_SIZE]; 
+    decodeCacheL1(decoded, processor, cachedSecret);
+    for (int i = 0; i < CACHE_SIZE; i++) {
+        cout << decoded[i] << endl;
+    }
 
     delete processor;
     return 0;

@@ -1,7 +1,7 @@
 #ifndef DEF_PROCESSOR
 #define DEF_PROCESSOR
 
-#define CACHE_SIZE 5
+#define CACHE_SIZE 8
 
 #include <string>
 
@@ -13,7 +13,7 @@ class Processor
 
     Processor();
     void transcientMove(int position, bool value);
-    void roolBack(bool targetCacheL1[CACHE_SIZE]);
+    void rollBack(bool targetCacheL1[CACHE_SIZE]);
     void setCacheL1(bool cacheL1[CACHE_SIZE]);
 
     private:
