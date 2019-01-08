@@ -13,12 +13,13 @@ class Processor
 
     Processor();
     void transcientMove(int position, bool value);
-    void rollBack(bool targetCacheL1[CACHE_SIZE]);
+    void rollBack();
     void setCacheL1(bool cacheL1[CACHE_SIZE]);
 
     private:
 
     bool cacheL1[CACHE_SIZE];
+    bool savedCacheL1[CACHE_SIZE];
 };
 
 #endif

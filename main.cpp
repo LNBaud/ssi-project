@@ -7,22 +7,22 @@
 
 using namespace std;
 
-double timeToRollBackL1(Processor* processor, bool * cachedSecret, int pos, bool boolVal){
+double timeToRollBackL1(Processor* processor, int pos, bool boolVal){
     // Record start time
     auto start = std::chrono::high_resolution_clock::now();
 
     processor->transcientMove(pos,boolVal);
-    processor->rollBack(cachedSecret);
+    processor->rollBack();
     
     // Record end time
     auto finish = std::chrono::high_resolution_clock::now();
     return (std::chrono::duration<double> (finish - start)).count();
 }
 
-void decodeCacheL1(bool* decoded, Processor *processor, bool * cachedSecret) {
+void decodeCacheL1(bool* decoded, Processor *processor) {
     for (int i=0; i<CACHE_SIZE; i++) {
-        if (timeToRollBackL1(processor, cachedSecret, i, true) > 
-                timeToRollBackL1(processor, cachedSecret, i, false)) {
+        if (timeToRollBackL1(processor, i, true) > 
+                timeToRollBackL1(processor, i, false)) {
             decoded[i] = false;
         } else {
             decoded[i] = true;
@@ -64,7 +64,7 @@ int main(int argc, char** argv)
     processor->setCacheL1(cachedSecret);
 
     bool decoded[CACHE_SIZE]; 
-    decodeCacheL1(decoded, processor, cachedSecret);
+    decodeCacheL1(decoded, processor);
     for (int i = 0; i < CACHE_SIZE; i++) {
         cout << decoded[i] << endl;
     }

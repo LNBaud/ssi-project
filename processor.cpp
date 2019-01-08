@@ -18,13 +18,14 @@ void Processor::transcientMove(int position, bool value) {
 void Processor::setCacheL1(bool cacheL1[CACHE_SIZE]) {
     for (int i = 0; i < CACHE_SIZE; i++) {
         this->cacheL1[i] = cacheL1[i];
+        this->savedCacheL1[i] = cacheL1[i];
     }
 }
 
-void Processor::rollBack(bool cacheL1[CACHE_SIZE]) {
+void Processor::rollBack() {
     for (int i = 0; i < CACHE_SIZE; i++) {
-        if (this->cacheL1[i] != cacheL1[i]) {
-            this->cacheL1[i] = cacheL1[i];
+        if (this->cacheL1[i] != this->savedCacheL1[i]) {
+            this->cacheL1[i] = this->savedCacheL1[i];
             usleep(1);
         }
     }
