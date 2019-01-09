@@ -43,6 +43,15 @@ double timeToRollBackL1Octet(Processor* processor, int pos, char val) {
     return (std::chrono::duration<double> (finish - start)).count();
 }
 
+void displayDecoded(char * decoded, int length){
+    system("clear");
+    cout << length << " bytes /4096" << endl;
+    for(int i=0; i!=length; i++){
+        cout << decoded[i];
+    }
+    cout << endl;
+}
+
 void decodeCacheL1Octet(char* decoded, Processor *processor) {
     double rollBackTime[256];
     char minOctet;
@@ -59,9 +68,9 @@ void decodeCacheL1Octet(char* decoded, Processor *processor) {
                 minOctet = j;
             }
         }
-        cout << minOctet;
-        cout.flush();
-        usleep(100000);
+        decoded[i] = minOctet;
+        displayDecoded(decoded, i+1);
+        usleep(10000);
     } 
 }
 
@@ -106,7 +115,7 @@ int main(int argc, char** argv)
 
 
     Processor* processor2 = new Processor();
-    const char secret[CACHE_SIZE] = "Pourtant, sous la tutelle invisible d'un Ange,\nL'Enfant déshérité s'enivre de soleil,\nEt dans tout ce qu'il boit et dans tout ce qu'il mange\nRetrouve l'ambroisie et le nectar vermeil.\n";
+    const char secret[CACHE_SIZE] = "This is your last chance.\nAfter this, there is no turning back.\n- You take the blue pill -\nthe story ends, you wake up in your bed and believe whatever you want to believe.\n- You take the red pill —\nyou stay in Wonderland, and I show you how deep the rabbit hole goes.\nRemember: all I'm offering is the truth.\nNothing more.\n";
     processor2->setCacheL1Octet(secret, CACHE_SIZE);
 
     char decodedOctet[CACHE_SIZE];

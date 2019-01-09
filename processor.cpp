@@ -50,7 +50,7 @@ void Processor::rollBackOctet() {
     for (int i = 0; i < CACHE_SIZE; i++) {
         if (this->cacheL1Octet[i] != this->savedCacheL1Octet[i]) {
             this->cacheL1Octet[i] = this->savedCacheL1Octet[i];
-            usleep(30);
+            usleep(50);
         }
     }
 }
