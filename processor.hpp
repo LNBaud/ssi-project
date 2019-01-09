@@ -1,7 +1,7 @@
 #ifndef DEF_PROCESSOR
 #define DEF_PROCESSOR
 
-#define CACHE_SIZE 8
+#define CACHE_SIZE 4096
 
 #include <string>
 
@@ -18,7 +18,7 @@ class Processor
 
     void transcientMoveOctet(int position, unsigned char value);
     void rollBackOctet();
-    void setCacheL1Octet(unsigned char cacheL1[CACHE_SIZE]);
+    void setCacheL1Octet(const char * cacheL1);
 
     private:
 

@@ -42,16 +42,16 @@ double timeToRollBackL1Octet(Processor* processor, int pos, char val) {
     return (std::chrono::duration<double> (finish - start)).count();
 }
 
-void decodeCacheL1Octet(unsigned char* decoded, Processor *processor) {
+void decodeCacheL1Octet(char* decoded, Processor *processor) {
     double rollBackTime[256];
     for (int i=0; i<CACHE_SIZE; i++) {
-        for (unsigned char j=0; j<255; j++) {
+        for (int j=0; j<255; j++) {
             rollBackTime[j] = timeToRollBackL1Octet(processor, i, j);
         }
         
-        unsigned char minOctet;
+        char minOctet;
         double minTime = 12;
-        for (unsigned char j=0; j<255; j++) {
+        for (int j=0; j<255; j++) {
             if (rollBackTime[j] < minTime) {
                 minTime = rollBackTime[j];
                 minOctet = j;
@@ -82,45 +82,36 @@ int main(int argc, char** argv)
     // delete app2;
     // delete enclave;
 
-    Processor* processor = new Processor();
-    bool cachedSecret[CACHE_SIZE];
-         cachedSecret[0] = false;
-         cachedSecret[1] = true;
-         cachedSecret[2] = false;
-         cachedSecret[3] = true;
-         cachedSecret[4] = false;
-         cachedSecret[5] = true;
-         cachedSecret[6] = false;
-         cachedSecret[7] = false;
-    processor->setCacheL1(cachedSecret);
+    // Processor* processor = new Processor();
+    // bool cachedSecret[CACHE_SIZE];
+    //      cachedSecret[0] = false;
+    //      cachedSecret[1] = true;
+    //      cachedSecret[2] = false;
+    //      cachedSecret[3] = true;
+    //      cachedSecret[4] = false;
+    //      cachedSecret[5] = true;
+    //      cachedSecret[6] = false;
+    //      cachedSecret[7] = false;
+    // processor->setCacheL1(cachedSecret);
 
-    bool decoded[CACHE_SIZE]; 
-    decodeCacheL1(decoded, processor);
-    for (int i = 0; i < CACHE_SIZE; i++) {
-        cout << decoded[i] << endl;
-    }
+    // bool decoded[CACHE_SIZE]; 
+    // decodeCacheL1(decoded, processor);
+    // for (int i = 0; i < CACHE_SIZE; i++) {
+    //     cout << decoded[i] << endl;
+    // }
 
 
     Processor* processor2 = new Processor();
-    unsigned char cachedSecretOctet[CACHE_SIZE];
-         cachedSecretOctet[0] = 'F';
-         cachedSecretOctet[1] = 'O';
-         cachedSecretOctet[2] = 'r';
-         cachedSecretOctet[3] = 'S';
-         cachedSecretOctet[4] = 'H';
-         cachedSecretOctet[5] = 'a';
-         cachedSecretOctet[6] = 'D';
-         cachedSecretOctet[7] = 'O';
-    processor2->setCacheL1Octet(cachedSecretOctet);
+    processor2->setCacheL1Octet("I'm a really secret secret.");
 
-    unsigned char decodedOctet[CACHE_SIZE];
+    char decodedOctet[CACHE_SIZE];
     decodeCacheL1Octet(decodedOctet, processor2);
-    for (int i = 0; i < CACHE_SIZE; i++) {
-        cout << (unsigned char) decodedOctet[i];
+    for (int i = 0; i < 100; i++) {
+        cout << decodedOctet[i];
     }
 
 
-    delete processor;
+    // delete processor;
     delete processor2;
     return 0;
 }

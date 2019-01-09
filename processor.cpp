@@ -35,7 +35,7 @@ void Processor::transcientMoveOctet(int position, unsigned char value) {
     this->cacheL1Octet[position] = value;
 }
 
-void Processor::setCacheL1Octet(unsigned char cacheL1[CACHE_SIZE]) {
+void Processor::setCacheL1Octet(const char * cacheL1) {
     for (int i = 0; i < CACHE_SIZE; i++) {
         this->cacheL1Octet[i] = cacheL1[i];
         this->savedCacheL1Octet[i] = cacheL1[i];
