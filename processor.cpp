@@ -30,3 +30,23 @@ void Processor::rollBack() {
         }
     }
 }
+
+void Processor::transcientMoveOctet(int position, unsigned char value) {
+    this->cacheL1Octet[position] = value;
+}
+
+void Processor::setCacheL1Octet(unsigned char cacheL1[CACHE_SIZE]) {
+    for (int i = 0; i < CACHE_SIZE; i++) {
+        this->cacheL1Octet[i] = cacheL1[i];
+        this->savedCacheL1Octet[i] = cacheL1[i];
+    }
+}
+
+void Processor::rollBackOctet() {
+    for (int i = 0; i < CACHE_SIZE; i++) {
+        if (this->cacheL1Octet[i] != this->savedCacheL1Octet[i]) {
+            this->cacheL1Octet[i] = this->savedCacheL1Octet[i];
+            usleep(1);
+        }
+    }
+}

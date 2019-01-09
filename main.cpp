@@ -30,6 +30,37 @@ void decodeCacheL1(bool* decoded, Processor *processor) {
     } 
 }
 
+double timeToRollBackL1Octet(Processor* processor, int pos, char val) {
+    // Record start time
+    auto start = std::chrono::high_resolution_clock::now();
+
+    processor->transcientMoveOctet(pos,val);
+    processor->rollBackOctet();
+    
+    // Record end time
+    auto finish = std::chrono::high_resolution_clock::now();
+    return (std::chrono::duration<double> (finish - start)).count();
+}
+
+void decodeCacheL1Octet(unsigned char* decoded, Processor *processor) {
+    double rollBackTime[256];
+    for (int i=0; i<CACHE_SIZE; i++) {
+        for (unsigned char j=0; j<255; j++) {
+            rollBackTime[j] = timeToRollBackL1Octet(processor, i, j);
+        }
+        
+        unsigned char minOctet;
+        double minTime = 12;
+        for (unsigned char j=0; j<255; j++) {
+            if (rollBackTime[j] < minTime) {
+                minTime = rollBackTime[j];
+                minOctet = j;
+            }
+        }
+        decoded[i] = minOctet;
+    } 
+}
+
 int main(int argc, char** argv)
 {
     // cout << "Foreshadow !" << endl;
@@ -69,7 +100,28 @@ int main(int argc, char** argv)
         cout << decoded[i] << endl;
     }
 
+
+    Processor* processor2 = new Processor();
+    unsigned char cachedSecretOctet[CACHE_SIZE];
+         cachedSecretOctet[0] = 72;
+         cachedSecretOctet[1] = 65;
+         cachedSecretOctet[2] = 67;
+         cachedSecretOctet[3] = 75;
+         cachedSecretOctet[4] = 69;
+         cachedSecretOctet[5] = 82;
+         cachedSecretOctet[6] = 115;
+         cachedSecretOctet[7] = 105;
+    processor2->setCacheL1Octet(cachedSecretOctet);
+
+    unsigned char decodedOctet[CACHE_SIZE];
+    decodeCacheL1Octet(decodedOctet, processor2);
+    for (int i = 0; i < CACHE_SIZE; i++) {
+        cout << (unsigned char) decodedOctet[i];
+    }
+
+
     delete processor;
+    delete processor2;
     return 0;
 }
 
