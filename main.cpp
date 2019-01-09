@@ -45,7 +45,7 @@ double timeToRollBackL1Octet(Processor* processor, int pos, char val) {
 
 void displayDecoded(char * decoded, int length){
     system("clear");
-    cout << length << " bytes /4096" << endl;
+    cout << "decoded " << length << " bytes /4096" << endl;
     for(int i=0; i!=length; i++){
         cout << decoded[i];
     }
