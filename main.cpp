@@ -103,14 +103,14 @@ int main(int argc, char** argv)
 
     Processor* processor2 = new Processor();
     unsigned char cachedSecretOctet[CACHE_SIZE];
-         cachedSecretOctet[0] = 72;
-         cachedSecretOctet[1] = 65;
-         cachedSecretOctet[2] = 67;
-         cachedSecretOctet[3] = 75;
-         cachedSecretOctet[4] = 69;
-         cachedSecretOctet[5] = 82;
-         cachedSecretOctet[6] = 115;
-         cachedSecretOctet[7] = 105;
+         cachedSecretOctet[0] = 'F';
+         cachedSecretOctet[1] = 'O';
+         cachedSecretOctet[2] = 'r';
+         cachedSecretOctet[3] = 'S';
+         cachedSecretOctet[4] = 'H';
+         cachedSecretOctet[5] = 'a';
+         cachedSecretOctet[6] = 'D';
+         cachedSecretOctet[7] = 'O';
     processor2->setCacheL1Octet(cachedSecretOctet);
 
     unsigned char decodedOctet[CACHE_SIZE];
