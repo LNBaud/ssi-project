@@ -4,6 +4,7 @@
 // #include "enclave.hpp"
 // #include "application.hpp"
 #include "processor.hpp"
+#include <unistd.h>
 
 using namespace std;
 
@@ -44,20 +45,23 @@ double timeToRollBackL1Octet(Processor* processor, int pos, char val) {
 
 void decodeCacheL1Octet(char* decoded, Processor *processor) {
     double rollBackTime[256];
+    char minOctet;
+    double minTime = 100.0;
     for (int i=0; i<CACHE_SIZE; i++) {
         for (int j=0; j<255; j++) {
             rollBackTime[j] = timeToRollBackL1Octet(processor, i, j);
         }
-        
-        char minOctet;
-        double minTime = 12;
+        minOctet = '.';
+        minTime = 100.0;
         for (int j=0; j<255; j++) {
             if (rollBackTime[j] < minTime) {
                 minTime = rollBackTime[j];
                 minOctet = j;
             }
         }
-        decoded[i] = minOctet;
+        cout << minOctet;
+        cout.flush();
+        usleep(100000);
     } 
 }
 
@@ -102,14 +106,18 @@ int main(int argc, char** argv)
 
 
     Processor* processor2 = new Processor();
-    processor2->setCacheL1Octet("I'm a really secret secret.");
+    const char secret[CACHE_SIZE] = "Pourtant, sous la tutelle invisible d'un Ange,\nL'Enfant déshérité s'enivre de soleil,\nEt dans tout ce qu'il boit et dans tout ce qu'il mange\nRetrouve l'ambroisie et le nectar vermeil.\n";
+    processor2->setCacheL1Octet(secret, CACHE_SIZE);
 
     char decodedOctet[CACHE_SIZE];
     decodeCacheL1Octet(decodedOctet, processor2);
-    for (int i = 0; i < 100; i++) {
-        cout << decodedOctet[i];
-    }
-
+    // for (int i = 0; i < CACHE_SIZE; i++) {
+    //     cout << decodedOctet[i];
+    // }
+    // cout << endl;
+    // for (int i = 0; i < CACHE_SIZE; i++) {
+    //     cout << processor2->cacheL1Octet[i];
+    // }
 
     // delete processor;
     delete processor2;
